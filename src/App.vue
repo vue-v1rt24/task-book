@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Header from './components/Header.vue';
+import Header from './components/header/Header.vue';
 import Navigation from './components/Navigation.vue';
 </script>
 

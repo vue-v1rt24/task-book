@@ -7,7 +7,7 @@ import Chart from './imagesSvg/Chart.vue';
 const navItems = [
   { title: 'Временная шкала', img: Clock, link: '/timeline' },
   { title: 'Действия', img: List, link: '/activities' },
-  { title: 'Прогресс', img: Chart, link: '/progress' },
+  { title: 'Прогресс', img: Chart, link: '/' },
 ];
 </script>
 
@@ -32,6 +32,7 @@ const navItems = [
   bottom: 0;
   background-color: white;
   border-top: 1px solid rgb(181, 181, 181);
+  z-index: 10;
 }
 
 /*  */
@@ -53,6 +54,11 @@ const navItems = [
     align-items: center;
     row-gap: 6px;
     padding: 15px 0;
+
+    /* Активная ссылка */
+    &.active {
+      background-color: rgb(236, 236, 236);
+    }
   }
 }
 </style>
