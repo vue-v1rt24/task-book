@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Clock from './imagesSvg/Clock.vue';
-import List from './imagesSvg/List.vue';
-import Chart from './imagesSvg/Chart.vue';
+import ClockSvg from './imagesSvg/ClockSvg.vue';
+import ListSvg from './imagesSvg/ListSvg.vue';
+import ChartSvg from './imagesSvg/ChartSvg.vue';
 
 // Меню
 const navItems = [
-  { title: 'Временная шкала', img: Clock, link: '/timeline' },
-  { title: 'Действия', img: List, link: '/activities' },
-  { title: 'Прогресс', img: Chart, link: '/' },
+  { title: 'Временная шкала', img: ClockSvg, link: '/timeline' },
+  { title: 'Действия', img: ListSvg, link: '/activities' },
+  { title: 'Прогресс', img: ChartSvg, link: '/' },
 ];
 </script>
 

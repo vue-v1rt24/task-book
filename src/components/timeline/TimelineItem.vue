@@ -1,19 +1,44 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref } from 'vue';
+
+import TimelineHour from '@/components/timeline/TimelineHour.vue';
+import UiSelect from '@/components/ui/UiSelect.vue';
+import UiButton from '@/components/ui/UiButton.vue';
+import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
+
+import { Task } from '@/shared/constants';
+
 import type { TypeTimeline } from '@/types/timeline.type';
 
-//
+// Часы (0 - 23)
 const { hour } = defineProps<TypeTimeline>();
 
-//
-const lineClasses = computed(() => {
-  return ['line__link', hour === new Date().getHours() ? 'active' : 'default'];
-});
+// Варианты для задач
+const options = [
+  { value: 1, label: Task.Coding },
+  { value: 2, label: Task.Reading },
+  { value: 3, label: Task.Training },
+];
+
+// Выбранный вариант задачи
+const selected = ref<number | null>(1);
 </script>
 
 <template>
   <li class="line">
-    <a href="#" :class="lineClasses">{{ hour }}:00</a>
+    <!-- Время -->
+    <TimelineHour :hour />
+
+    <!--  -->
+    <div class="select_wrap">
+      <!-- Кнопка сброса -->
+      <UiButton @click="selected = null">
+        <CloseSvg />
+      </UiButton>
+
+      <!-- Варианты задач -->
+      <UiSelect placeholder="Отдых" v-model="selected" :options />
+    </div>
   </li>
 </template>
 
@@ -48,5 +73,11 @@ const lineClasses = computed(() => {
     color: var(--color-white);
     background-color: var(--color-purple-500);
   }
+}
+
+/* Блок select */
+.select_wrap {
+  display: flex;
+  column-gap: 10px;
 }
 </style>

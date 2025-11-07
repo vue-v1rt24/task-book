@@ -35,3 +35,10 @@ a {
   padding: 0 15px;
   margin: 0 auto;
 }
+
+/* Троеточие в конце */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

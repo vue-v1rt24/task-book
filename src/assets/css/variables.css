@@ -2,4 +2,7 @@
   --color-white: #fff;
   --color-gray-400: #ccc;
   --color-purple-500: #800080;
+
+  /*  */
+  --transition: 0.3s;
 }

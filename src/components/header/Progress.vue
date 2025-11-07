@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import CheckCircle from '@/components/imagesSvg/CheckCircle.vue';
+import CheckCircleSvg from '@/components/imagesSvg/CheckCircleSvg.vue';
 </script>
 
 <template>
   <RouterLink :to="{ name: 'progress' }" class="header__complete_wrap">
     <div v-if="true" class="header__complete">
       Day complete!
-      <CheckCircle />
+      <CheckCircleSvg />
     </div>
 
     <!--  -->
