@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import { useActivitiesStore } from '@/stores/activities.store';
+
 import TimelineHour from '@/components/timeline/TimelineHour.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
 import UiButton from '@/components/ui/UiButton.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 
-import { Task } from '@/shared/constants';
-
 import type { TypeTimeline } from '@/types/timeline.type';
+
+// Хранилище
+const { generateActivitySelectOptions } = useActivitiesStore();
 
 // Часы (0 - 23)
 const { hour } = defineProps<TypeTimeline>();
 
 // Варианты для задач
-const options = [
-  { value: 1, label: Task.Coding },
-  { value: 2, label: Task.Reading },
-  { value: 3, label: Task.Training },
-];
+const options = generateActivitySelectOptions;
 
 // Выбранный вариант задачи
-const selected = ref<number | null>(1);
+const selected = ref<string | null>(null);
 </script>
 
 <template>

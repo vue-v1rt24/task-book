@@ -30,6 +30,7 @@ a {
 /*  */
 
 .container {
+  flex: 1;
   max-width: 1200px;
   box-sizing: content-box;
   padding: 0 15px;

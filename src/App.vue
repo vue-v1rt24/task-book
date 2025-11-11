@@ -21,5 +21,6 @@ import Navigation from './components/Navigation.vue';
 <style lang="css" scoped>
 .main {
   flex: 1;
+  display: flex;
 }
 </style>

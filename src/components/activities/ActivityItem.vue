@@ -1,3 +1,12 @@
+<script lang="ts">
+// Варианты для задач
+const periodSelectOptions = [
+  { value: 15, label: '0:15' },
+  { value: 30, label: '0:30' },
+  { value: 45, label: '0:45' },
+];
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 
@@ -6,34 +15,32 @@ import UiSelect from '@/components/ui/UiSelect.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 import DeleteSvg from '@/components/imagesSvg/DeleteSvg.vue';
 
-import type { TypeTask } from '@/shared/constants';
+import type { TypeActivity } from '@/types/activity.type';
 
 //
 defineProps<{
-  activity: TypeTask;
+  activity: TypeActivity;
 }>();
 
-// Варианты для задач
-const periodSelectOptions = [
-  { value: 15, label: '0:15' },
-  { value: 30, label: '0:30' },
-  { value: 45, label: '0:45' },
-];
+//
+const emit = defineEmits<{
+  deleteActivity: [activity: TypeActivity];
+}>();
 
 // Выбранный вариант задачи
-const secondsToComplete = ref<number | null>(15);
+const secondsToComplete = ref<number | null>(null);
 </script>
 
 <template>
   <li class="activities__list">
     <div class="activities__del">
-      <UiButton>
+      <UiButton @click="emit('deleteActivity', activity)">
         <delete-svg />
       </UiButton>
 
       <!--  -->
       <span class="ellipsis">
-        {{ activity }}
+        {{ activity.name }}
       </span>
     </div>
 

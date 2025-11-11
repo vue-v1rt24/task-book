@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { hoursInDay } from '@/shared/constants';
+import { hoursInDay } from '@/types/constants';
 import TimelineItem from '@/components/timeline/TimelineItem.vue';
 import type { TypeHour, TypeTimeline } from '@/types/timeline.type';
 

@@ -4,7 +4,7 @@ defineProps<{
   options: T[];
 }>();
 
-const modelValue = defineModel<number | null>();
+const modelValue = defineModel<string | null>();
 </script>
 
 <template>
