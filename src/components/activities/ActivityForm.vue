@@ -19,7 +19,6 @@ const submitHandler = async () => {
   await nextTick();
   window.scrollTo({
     top: document.body.scrollHeight,
-    behavior: 'smooth',
   });
 };
 </script>

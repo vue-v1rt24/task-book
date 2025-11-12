@@ -1,5 +1,14 @@
 // Часы
 export const hoursInDay = 24;
 
+// Количество секунд в минуте
+export const secondsInMinute = 60;
+
+// Количество минут в часе
+export const minutesInHour = 60;
+
 // Количество секунд в часе
-export const secondsInHour = 3600;
+export const secondsInHour = secondsInMinute * minutesInHour; // 3600
+
+//
+export const midnightHour = 0;

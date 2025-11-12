@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { hoursInDay } from '@/types/constants';
 import TimelineItem from '@/components/timeline/TimelineItem.vue';
-import type { TypeHour, TypeTimeline } from '@/types/timeline.type';
+import { useTimelineStore } from '@/stores/timeline.store';
 
-// Часы
-const timelineItems: TypeTimeline[] = [];
+import type { TypeTimeline } from '@/types/timeline.type';
 
-for (let hour = 0; hour < hoursInDay; hour++) {
-  timelineItems.push({ hour: hour as TypeHour });
-}
+// Хранилище
+const timelineStore = useTimelineStore();
+
+//
+const selectActivity = (activityId: string | number, timelineItem: TypeTimeline) => {
+  timelineItem.activityId = activityId;
+};
 </script>
 
 <template>
   <ul class="line_wrap">
     <TimelineItem
-      v-for="timelineItem in timelineItems"
+      v-for="timelineItem in timelineStore.timelineItems"
       :key="timelineItem.hour"
       v-bind="timelineItem"
+      @select-activity="selectActivity($event, timelineItem)"
     />
   </ul>
 </template>

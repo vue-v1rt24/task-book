@@ -3,3 +3,9 @@ export type TypeActivity = {
   name: string;
   secondsToComplete: number;
 };
+
+//
+export type TypePeriodSelectOptions = {
+  value: number;
+  label: string;
+};

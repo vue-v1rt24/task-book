@@ -4,12 +4,13 @@ defineProps<{
   options: T[];
 }>();
 
-const modelValue = defineModel<string | null>();
+//
+const modelValue = defineModel<number | string>();
 </script>
 
 <template>
-  <select v-model="modelValue" class="select">
-    <option value="null" disabled>{{ placeholder }}</option>
+  <select v-model="modelValue" class="select" name="#">
+    <option value="0" disabled>{{ placeholder }}</option>
     <option v-for="{ value, label } in options" :key="value" :value="value">
       {{ label }}
     </option>

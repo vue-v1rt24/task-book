@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { useActivitiesStore } from '@/stores/activities.store';
+import { useTimelineStore } from '@/stores/timeline.store';
+
 import ActivityItem from '@/components/activities/ActivityItem.vue';
 import ActivityForm from '@/components/activities/ActivityForm.vue';
 
 import type { TypeActivity } from '@/types/activity.type';
 
-// Хранилище
+// Хранилища
 const activitiesStore = useActivitiesStore();
+const timelineStore = useTimelineStore();
 
 // Добавление активности
 const createActivity = (newActivity: string) => {
   activitiesStore.createActivity(newActivity);
 };
 
+// Установка времени выполнения активности
+const setSecondsToComplete = (time: number, id: string) => {
+  activitiesStore.setSecondsToComplete(time, id);
+};
+
 // Удаление активности
 const deleteActivity = (activity: TypeActivity) => {
+  // Обнуляем выбранную активность в выборе(select) на странице "Временная шкала"
+  timelineStore.resetCurrentActive(activity.id);
+
+  // Удаление активности
   activitiesStore.removeActivity(activity);
 };
 </script>
@@ -25,6 +37,7 @@ const deleteActivity = (activity: TypeActivity) => {
       v-for="activity in activitiesStore.activities"
       :key="activity.id"
       :activity
+      @set-seconds-to-complete="setSecondsToComplete($event, activity.id)"
       @delete-activity="deleteActivity"
     />
   </ul>

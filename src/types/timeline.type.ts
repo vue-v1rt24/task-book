@@ -5,4 +5,5 @@ export type TypeHour = TypeRange<23>;
 
 export type TypeTimeline = {
   hour: TypeHour;
+  activityId: string | number;
 };

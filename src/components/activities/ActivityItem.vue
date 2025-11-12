@@ -1,14 +1,15 @@
 <script lang="ts">
+import { useActivitiesStore } from '@/stores/activities.store';
+
+//
+const activitiesStore = useActivitiesStore();
+
 // Варианты для задач
-const periodSelectOptions = [
-  { value: 15, label: '0:15' },
-  { value: 30, label: '0:30' },
-  { value: 45, label: '0:45' },
-];
+const periodSelectOptions = activitiesStore.periodSelectOptions;
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import UiButton from '@/components/ui/UiButton.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
@@ -18,17 +19,22 @@ import DeleteSvg from '@/components/imagesSvg/DeleteSvg.vue';
 import type { TypeActivity } from '@/types/activity.type';
 
 //
-defineProps<{
+const { activity } = defineProps<{
   activity: TypeActivity;
 }>();
 
 //
 const emit = defineEmits<{
+  setSecondsToComplete: [time: number];
   deleteActivity: [activity: TypeActivity];
 }>();
 
-// Выбранный вариант задачи
-const secondsToComplete = ref<number | null>(null);
+// Выбранный время задачи
+const secondsToComplete = ref<number>(activity.secondsToComplete);
+
+watch(secondsToComplete, (val) => {
+  emit('setSecondsToComplete', val);
+});
 </script>
 
 <template>
@@ -46,12 +52,12 @@ const secondsToComplete = ref<number | null>(null);
 
     <!--  -->
     <div class="activities__set">
-      <UiButton @click="secondsToComplete = null">
+      <UiButton @click="secondsToComplete = 0">
         <close-svg />
       </UiButton>
 
       <!--  -->
-      <UiSelect placeholder="ч:мм" :options="periodSelectOptions" v-model="secondsToComplete" />
+      <UiSelect placeholder="чч:мм" :options="periodSelectOptions" v-model="secondsToComplete" />
     </div>
   </li>
 </template>

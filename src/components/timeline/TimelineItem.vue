@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useActivitiesStore } from '@/stores/activities.store';
 
@@ -9,18 +9,28 @@ import UiButton from '@/components/ui/UiButton.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 
 import type { TypeTimeline } from '@/types/timeline.type';
+import type { TypeActivity } from '@/types/activity.type';
 
 // Хранилище
-const { generateActivitySelectOptions } = useActivitiesStore();
+const activitiesStore = useActivitiesStore();
 
 // Часы (0 - 23)
-const { hour } = defineProps<TypeTimeline>();
+const { hour, activityId } = defineProps<TypeTimeline>();
+
+// emits
+const emit = defineEmits<{
+  selectActivity: [id: string | number];
+}>();
 
 // Варианты для задач
-const options = generateActivitySelectOptions;
+const options = activitiesStore.generateActivitySelectOptions;
 
 // Выбранный вариант задачи
-const selected = ref<string | null>(null);
+const selectedActivityId = ref<string | number>(activityId);
+
+watch(selectedActivityId, (id) => {
+  emit('selectActivity', id);
+});
 </script>
 
 <template>
@@ -31,12 +41,12 @@ const selected = ref<string | null>(null);
     <!--  -->
     <div class="select_wrap">
       <!-- Кнопка сброса -->
-      <UiButton @click="selected = null">
+      <UiButton @click="selectedActivityId = 0">
         <CloseSvg />
       </UiButton>
 
       <!-- Варианты задач -->
-      <UiSelect placeholder="Отдых" v-model="selected" :options />
+      <UiSelect placeholder="Отдых" v-model="selectedActivityId" :options />
     </div>
   </li>
 </template>
