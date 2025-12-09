@@ -1,5 +1,26 @@
 <script setup lang="ts">
+import { nextTick } from 'vue';
 import Progress from '@/components/header/Progress.vue';
+import { useRouter } from 'vue-router';
+import { useTimelineStore } from '@/stores/timeline.store';
+
+// Хранилище
+const timelineStore = useTimelineStore();
+
+// Роутер
+const router = useRouter();
+
+// Переход по нажатию на логотип
+const goTo = async () => {
+  if (router.currentRoute.value.name === 'timeline') {
+    timelineStore.changeCurrentPage('');
+
+    await nextTick();
+    timelineStore.changeCurrentPage('timeline');
+  } else {
+    router.push({ name: 'timeline' });
+  }
+};
 </script>
 
 <template>
@@ -7,9 +28,9 @@ import Progress from '@/components/header/Progress.vue';
     <div class="container">
       <div class="header">
         <!-- Логотип -->
-        <RouterLink :to="{ name: 'timeline' }" class="header__logo">
+        <a @click.prevent="goTo" href="#" class="header__logo">
           <img src="@/assets/img/logo.png" alt="Логотип" />
-        </RouterLink>
+        </a>
 
         <!-- Прогресс -->
         <Progress />

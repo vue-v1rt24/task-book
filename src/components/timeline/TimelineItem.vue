@@ -6,20 +6,22 @@ import { useActivitiesStore } from '@/stores/activities.store';
 import TimelineHour from '@/components/timeline/TimelineHour.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
 import UiButton from '@/components/ui/UiButton.vue';
+import TimelineStopwatch from '@/components/timeline/TimelineStopwatch.vue';
+
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 
 import type { TypeTimeline } from '@/types/timeline.type';
-import type { TypeActivity } from '@/types/activity.type';
 
 // Хранилище
 const activitiesStore = useActivitiesStore();
 
 // Часы (0 - 23)
-const { hour, activityId } = defineProps<TypeTimeline>();
+const { hour, activityId, activitySeconds } = defineProps<TypeTimeline>();
 
 // emits
 const emit = defineEmits<{
   selectActivity: [id: string | number];
+  scrollToHour: [hour: number];
 }>();
 
 // Варианты для задач
@@ -36,7 +38,7 @@ watch(selectedActivityId, (id) => {
 <template>
   <li class="line">
     <!-- Время -->
-    <TimelineHour :hour />
+    <TimelineHour :hour @click.prevent="emit('scrollToHour', hour)" />
 
     <!--  -->
     <div class="select_wrap">
@@ -48,6 +50,9 @@ watch(selectedActivityId, (id) => {
       <!-- Варианты задач -->
       <UiSelect placeholder="Отдых" v-model="selectedActivityId" :options />
     </div>
+
+    <!-- Секундомер -->
+    <TimelineStopwatch :hour :seconds="activitySeconds" />
   </li>
 </template>
 
@@ -58,6 +63,7 @@ watch(selectedActivityId, (id) => {
   display: flex;
   column-gap: 16px;
   padding: 32px 16px;
+  scroll-margin-top: 120px;
 }
 
 /*  */

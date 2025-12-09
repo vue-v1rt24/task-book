@@ -10,5 +10,8 @@ export const minutesInHour = 60;
 // Количество секунд в часе
 export const secondsInHour = secondsInMinute * minutesInHour; // 3600
 
+// Количество миллисекунд
+export const millisecondsInSecond = 1000;
+
 //
 export const midnightHour = 0;
