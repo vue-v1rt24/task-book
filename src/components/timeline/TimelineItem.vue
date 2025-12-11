@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import { useActivitiesStore } from '@/stores/activities.store';
-
 import TimelineHour from '@/components/timeline/TimelineHour.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
 import UiButton from '@/components/ui/UiButton.vue';
@@ -11,25 +9,22 @@ import TimelineStopwatch from '@/components/timeline/TimelineStopwatch.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 
 import type { TypeTimeline } from '@/types/timeline.type';
+import type { TypePeriodSelectOptions } from '@/types/activity.type';
 
-// Хранилище
-const activitiesStore = useActivitiesStore();
-
-// Часы (0 - 23)
-const { hour, activityId, activitySeconds } = defineProps<TypeTimeline>();
+//
+const { timelineItem, options } = defineProps<{
+  timelineItem: TypeTimeline;
+  options: TypePeriodSelectOptions[];
+}>();
 
 // emits
 const emit = defineEmits<{
   selectActivity: [id: string | number | null];
   scrollToHour: [hour: number];
-  updateActivitySeconds: [val: number];
 }>();
 
-// Варианты для задач
-const options = activitiesStore.generateActivitySelectOptions;
-
 // Выбранный вариант задачи
-const selectedActivityId = ref<string | number | null>(activityId);
+const selectedActivityId = ref<string | number | null>(timelineItem.activityId);
 
 watch(selectedActivityId, (id) => {
   emit('selectActivity', id);
@@ -39,7 +34,10 @@ watch(selectedActivityId, (id) => {
 <template>
   <li class="line">
     <!-- Время -->
-    <TimelineHour :hour @click.prevent="emit('scrollToHour', hour)" />
+    <TimelineHour
+      :hour="timelineItem.hour"
+      @click.prevent="emit('scrollToHour', timelineItem.hour)"
+    />
 
     <!--  -->
     <div class="select_wrap">
@@ -53,11 +51,7 @@ watch(selectedActivityId, (id) => {
     </div>
 
     <!-- Секундомер -->
-    <TimelineStopwatch
-      :hour
-      :seconds="activitySeconds"
-      @update-seconds="emit('updateActivitySeconds', $event)"
-    />
+    <TimelineStopwatch :timelineItem />
   </li>
 </template>
 

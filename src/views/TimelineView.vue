@@ -2,12 +2,15 @@
 import { onActivated, useTemplateRef, watch } from 'vue';
 
 import TimelineItem from '@/components/timeline/TimelineItem.vue';
+
 import { useTimelineStore } from '@/stores/timeline.store';
+import { useActivitiesStore } from '@/stores/activities.store';
 
 import type { TypeTimeline } from '@/types/timeline.type';
 
 // Хранилище
 const timelineStore = useTimelineStore();
+const activitiesStore = useActivitiesStore();
 
 //
 const selectActivity = (activityId: string | number | null, timelineItem: TypeTimeline) => {
@@ -35,11 +38,6 @@ watch(
   },
 );
 
-// Изменение времени секундомера в хранилище
-const updateTimelineItemActivitySeconds = (timelineItem: TypeTimeline, activitySeconds: number) => {
-  timelineStore.changeActivitySeconds(timelineItem, activitySeconds);
-};
-
 //
 onActivated(() => {
   scrollToHour(null, true);
@@ -52,10 +50,10 @@ onActivated(() => {
       v-for="timelineItem in timelineStore.timelineItems"
       :key="timelineItem.hour"
       ref="timelineItemRefs"
-      v-bind="timelineItem"
+      :timelineItem
+      :options="activitiesStore.generateActivitySelectOptions"
       @select-activity="selectActivity($event, timelineItem)"
       @scroll-to-hour="scrollToHour"
-      @update-activity-seconds="updateTimelineItemActivitySeconds(timelineItem, $event)"
     />
   </ul>
 </template>

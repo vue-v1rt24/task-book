@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+import { useTimelineStore } from '@/stores/timeline.store';
+
 import UiButton from '@/components/ui/UiButton.vue';
 
 import Repeat from '@/components/imagesSvg/Repeat.vue';
@@ -8,25 +10,23 @@ import Pause from '@/components/imagesSvg/Pause.vue';
 import Play from '@/components/imagesSvg/Play.vue';
 
 import { millisecondsInSecond } from '@/types/constants';
+import type { TypeTimeline } from '@/types/timeline.type';
+
+// Хранилище
+const timelineStore = useTimelineStore();
 
 //
-const { hour, seconds = 0 } = defineProps<{
-  hour: number;
-  seconds?: number;
-}>();
-
-//
-const emit = defineEmits<{
-  updateSeconds: [val: number];
+const { timelineItem } = defineProps<{
+  timelineItem: TypeTimeline;
 }>();
 
 // Управление секундомером
-const secondsAction = ref(seconds);
+const secondsAction = ref(timelineItem.activitySeconds);
 const isRunning = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const start = () => {
   isRunning.value = setInterval(() => {
-    emit('updateSeconds', 1);
+    timelineStore.changeActivitySeconds(timelineItem.activityId, 1);
     secondsAction.value++;
   }, millisecondsInSecond);
 };
@@ -40,7 +40,7 @@ const stop = () => {
 
 const reset = () => {
   stop();
-  emit('updateSeconds', -secondsAction.value);
+  timelineStore.changeActivitySeconds(timelineItem.activityId, -secondsAction.value);
   secondsAction.value = 0;
 };
 
@@ -53,7 +53,7 @@ const formatSeconds = computed(() => {
 });
 
 // Делаем не активной кнопку пуска секундомера, если время задачи не соответствует текущему часу
-const isStartButtonDisabled = hour !== new Date().getHours();
+const isStartButtonDisabled = timelineItem.hour !== new Date().getHours();
 </script>
 
 <template>

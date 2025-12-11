@@ -6,6 +6,6 @@ export type TypeActivity = {
 
 //
 export type TypePeriodSelectOptions = {
-  value: number;
+  value: number | string;
   label: string;
 };

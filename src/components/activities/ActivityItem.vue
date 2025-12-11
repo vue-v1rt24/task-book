@@ -1,29 +1,21 @@
-<script lang="ts">
-import ActivitySecondsToComplete from './ActivitySecondsToComplete.vue';
-import { useActivitiesStore } from '@/stores/activities.store';
-import { useTimelineStore } from '@/stores/timeline.store';
-
-// Хранилища
-const activitiesStore = useActivitiesStore();
-const timelineStore = useTimelineStore();
-
-// Варианты для задач
-const periodSelectOptions = activitiesStore.periodSelectOptions;
-</script>
-
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
+import ActivitySecondsToComplete from './ActivitySecondsToComplete.vue';
 import UiButton from '@/components/ui/UiButton.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
 import DeleteSvg from '@/components/imagesSvg/DeleteSvg.vue';
 
 import type { TypeActivity } from '@/types/activity.type';
+import type { TypePeriodSelectOptions } from '@/types/activity.type';
+import type { TypeTimeline } from '@/types/timeline.type';
 
 //
-const { activity } = defineProps<{
+const { activity, periodSelectOptions, timelineItems } = defineProps<{
   activity: TypeActivity;
+  periodSelectOptions: TypePeriodSelectOptions[];
+  timelineItems: TypeTimeline[];
 }>();
 
 //
@@ -66,7 +58,7 @@ watch(secondsToComplete, (val) => {
       <ActivitySecondsToComplete
         v-if="activity.secondsToComplete"
         :activity
-        :timeline-items="timelineStore.timelineItems"
+        :timeline-items="timelineItems"
       />
     </div>
   </li>

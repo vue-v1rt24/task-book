@@ -49,9 +49,9 @@ export const useTimelineStore = defineStore('timeline', () => {
   };
 
   // Изменение времени у определённого timelineItems
-  function changeActivitySeconds(timelineItem: TypeTimeline, activitySeconds: number) {
-    const idx = timelineItems.value.indexOf(timelineItem);
-    timelineItems.value[idx]!.activitySeconds += activitySeconds;
+  function changeActivitySeconds(activityId: string | number | null, activitySeconds: number) {
+    const timelineItem = timelineItems.value.find((item) => item.activityId === activityId);
+    timelineItem && (timelineItem.activitySeconds += activitySeconds);
   }
 
   // === Возвращаемые данные

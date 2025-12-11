@@ -37,6 +37,8 @@ const deleteActivity = (activity: TypeActivity) => {
       v-for="activity in activitiesStore.activities"
       :key="activity.id"
       :activity
+      :period-select-options="activitiesStore.periodSelectOptions"
+      :timeline-items="timelineStore.timelineItems"
       @set-seconds-to-complete="setSecondsToComplete($event, activity.id)"
       @delete-activity="deleteActivity"
     />
