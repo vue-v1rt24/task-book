@@ -1,8 +1,11 @@
 <script lang="ts">
+import ActivitySecondsToComplete from './ActivitySecondsToComplete.vue';
 import { useActivitiesStore } from '@/stores/activities.store';
+import { useTimelineStore } from '@/stores/timeline.store';
 
-//
+// Хранилища
 const activitiesStore = useActivitiesStore();
+const timelineStore = useTimelineStore();
 
 // Варианты для задач
 const periodSelectOptions = activitiesStore.periodSelectOptions;
@@ -58,6 +61,13 @@ watch(secondsToComplete, (val) => {
 
       <!--  -->
       <UiSelect placeholder="чч:мм" :options="periodSelectOptions" v-model="secondsToComplete" />
+
+      <!-- Оставшееся время до завершения задачи -->
+      <ActivitySecondsToComplete
+        v-if="activity.secondsToComplete"
+        :activity
+        :timeline-items="timelineStore.timelineItems"
+      />
     </div>
   </li>
 </template>

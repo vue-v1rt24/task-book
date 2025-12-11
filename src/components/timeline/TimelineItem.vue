@@ -20,15 +20,16 @@ const { hour, activityId, activitySeconds } = defineProps<TypeTimeline>();
 
 // emits
 const emit = defineEmits<{
-  selectActivity: [id: string | number];
+  selectActivity: [id: string | number | null];
   scrollToHour: [hour: number];
+  updateActivitySeconds: [val: number];
 }>();
 
 // Варианты для задач
 const options = activitiesStore.generateActivitySelectOptions;
 
 // Выбранный вариант задачи
-const selectedActivityId = ref<string | number>(activityId);
+const selectedActivityId = ref<string | number | null>(activityId);
 
 watch(selectedActivityId, (id) => {
   emit('selectActivity', id);
@@ -52,7 +53,11 @@ watch(selectedActivityId, (id) => {
     </div>
 
     <!-- Секундомер -->
-    <TimelineStopwatch :hour :seconds="activitySeconds" />
+    <TimelineStopwatch
+      :hour
+      :seconds="activitySeconds"
+      @update-seconds="emit('updateActivitySeconds', $event)"
+    />
   </li>
 </template>
 
@@ -92,6 +97,7 @@ watch(selectedActivityId, (id) => {
 
 /* Блок select */
 .select_wrap {
+  flex: 1;
   display: flex;
   column-gap: 10px;
 }

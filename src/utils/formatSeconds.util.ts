@@ -1,6 +1,6 @@
 import { minutesInHour } from '@/types/constants';
 
-export const generatePeriodSelectOptionsLabel = (periodInMinutes: number) => {
+export const formatSeconds = (periodInMinutes: number) => {
   const hours = Math.floor(periodInMinutes / minutesInHour)
     .toString()
     .padStart(2, '0');

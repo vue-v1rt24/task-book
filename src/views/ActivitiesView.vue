@@ -33,7 +33,7 @@ const deleteActivity = (activity: TypeActivity) => {
 
 <template>
   <ul v-if="activitiesStore.activities.length" class="activities">
-    <activity-item
+    <ActivityItem
       v-for="activity in activitiesStore.activities"
       :key="activity.id"
       :activity

@@ -2,9 +2,10 @@ import { ref, computed } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { secondsInHour, secondsInMinute } from '@/types/constants';
 import { createRandomId } from '@/utils/createRandomId.util';
-import { generatePeriodSelectOptionsLabel } from '@/utils/generatePeriodSelectOptionsLabel.util';
+import { formatSeconds } from '@/utils/formatSeconds.util';
 
 import type { TypeActivity, TypePeriodSelectOptions } from '@/types/activity.type';
+import type { TypeTimeline } from '@/types/timeline.type';
 
 //
 export const useActivitiesStore = defineStore('activity', () => {
@@ -59,7 +60,7 @@ export const useActivitiesStore = defineStore('activity', () => {
     periodSelectOptions.value = periodsInMinutes.map((periodInMinutes) => {
       return {
         value: periodInMinutes * secondsInMinute,
-        label: generatePeriodSelectOptionsLabel(periodInMinutes),
+        label: formatSeconds(periodInMinutes),
       };
     });
   }
@@ -78,6 +79,16 @@ export const useActivitiesStore = defineStore('activity', () => {
     activities.value.splice(activities.value.indexOf(activity), 1);
   }
 
+  //
+  function getTotalActivitySeconds(activity: TypeActivity, timelineItems: TypeTimeline[]) {
+    return timelineItems
+      .filter((timelineItem) => timelineItem.activityId === activity.id)
+      .reduce(
+        (totalSeconds, timelineItem) => Math.round(timelineItem.activitySeconds + totalSeconds),
+        0,
+      );
+  }
+
   // === Возвращаемые данные
   return {
     activities,
@@ -87,6 +98,7 @@ export const useActivitiesStore = defineStore('activity', () => {
     createActivity,
     setSecondsToComplete,
     removeActivity,
+    getTotalActivitySeconds,
   };
 });
 

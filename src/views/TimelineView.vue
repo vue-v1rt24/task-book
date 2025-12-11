@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef, watch } from 'vue';
+import { onActivated, useTemplateRef, watch } from 'vue';
 
 import TimelineItem from '@/components/timeline/TimelineItem.vue';
 import { useTimelineStore } from '@/stores/timeline.store';
@@ -10,25 +10,20 @@ import type { TypeTimeline } from '@/types/timeline.type';
 const timelineStore = useTimelineStore();
 
 //
-const selectActivity = (activityId: string | number, timelineItem: TypeTimeline) => {
+const selectActivity = (activityId: string | number | null, timelineItem: TypeTimeline) => {
   timelineItem.activityId = activityId;
 };
 
 // Перемещение к задаче, у которой час соответствует текущему часу
 const timelineItemRefs = useTemplateRef('timelineItemRefs');
 
-const scrollToHour = (hour: number | null = null, isSmooth?: boolean) => {
+const scrollToHour = (hour: number | null = null, isSmooth: boolean = false) => {
   hour ??= new Date().getHours();
 
   (timelineItemRefs.value![hour!]?.$el as HTMLElement).scrollIntoView({
     behavior: isSmooth ? 'instant' : 'smooth',
   });
 };
-
-//
-onMounted(() => {
-  scrollToHour(null, true);
-});
 
 //
 watch(
@@ -39,6 +34,16 @@ watch(
     }
   },
 );
+
+// Изменение времени секундомера в хранилище
+const updateTimelineItemActivitySeconds = (timelineItem: TypeTimeline, activitySeconds: number) => {
+  timelineStore.changeActivitySeconds(timelineItem, activitySeconds);
+};
+
+//
+onActivated(() => {
+  scrollToHour(null, true);
+});
 </script>
 
 <template>
@@ -50,6 +55,7 @@ watch(
       v-bind="timelineItem"
       @select-activity="selectActivity($event, timelineItem)"
       @scroll-to-hour="scrollToHour"
+      @update-activity-seconds="updateTimelineItemActivitySeconds(timelineItem, $event)"
     />
   </ul>
 </template>

@@ -15,12 +15,18 @@ const { hour, seconds = 0 } = defineProps<{
   seconds?: number;
 }>();
 
+//
+const emit = defineEmits<{
+  updateSeconds: [val: number];
+}>();
+
 // Управление секундомером
 const secondsAction = ref(seconds);
 const isRunning = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const start = () => {
   isRunning.value = setInterval(() => {
+    emit('updateSeconds', 1);
     secondsAction.value++;
   }, millisecondsInSecond);
 };
@@ -34,6 +40,7 @@ const stop = () => {
 
 const reset = () => {
   stop();
+  emit('updateSeconds', -secondsAction.value);
   secondsAction.value = 0;
 };
 

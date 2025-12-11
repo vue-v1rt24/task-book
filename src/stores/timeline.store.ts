@@ -20,8 +20,11 @@ export const useTimelineStore = defineStore('timeline', () => {
   const generateTimelineItems = (activities: TypeActivity[]) => {
     timelineItems.value = [...Array(hoursInDay).keys()].map((hour) => ({
       hour: hour as TypeHour,
-      activityId: hour % 4 === 0 ? 0 : activities[hour % 2]!.id,
-      activitySeconds: hour % 4 === 0 ? 0 : (15 * secondsInMinute * hour) % secondsInHour,
+      activityId: [0, 1, 2, 3, 4].includes(hour) ? activities[hour % 3]!.id : null,
+      activitySeconds: [0, 1, 2, 3, 4].includes(hour) ? hour * 600 : 0,
+
+      // activityId: hour % 4 === 0 ? 0 : activities[hour % 2]!.id,
+      // activitySeconds: hour % 4 === 0 ? 0 : (15 * secondsInMinute * hour) % secondsInHour,
     }));
 
     //
@@ -45,6 +48,12 @@ export const useTimelineStore = defineStore('timeline', () => {
     currentPage.value = page;
   };
 
+  // Изменение времени у определённого timelineItems
+  function changeActivitySeconds(timelineItem: TypeTimeline, activitySeconds: number) {
+    const idx = timelineItems.value.indexOf(timelineItem);
+    timelineItems.value[idx]!.activitySeconds += activitySeconds;
+  }
+
   // === Возвращаемые данные
   return {
     timelineItems,
@@ -52,6 +61,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     generateTimelineItems,
     deleteActive,
     changeCurrentPage,
+    changeActivitySeconds,
   };
 });
 

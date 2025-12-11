@@ -5,7 +5,7 @@ defineProps<{
 }>();
 
 //
-const modelValue = defineModel<number | string>();
+const modelValue = defineModel<number | string | null>();
 </script>
 
 <template>
@@ -19,6 +19,7 @@ const modelValue = defineModel<number | string>();
 
 <style lang="css" scoped>
 .select {
+  width: 100%;
   height: 45px;
   padding: 0 10px;
 }
