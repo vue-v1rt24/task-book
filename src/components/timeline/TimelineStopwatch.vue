@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useTimelineStore } from '@/stores/timeline.store';
 
@@ -24,9 +24,16 @@ const { timelineItem } = defineProps<{
 const secondsAction = ref(timelineItem.activitySeconds);
 const isRunning = ref<ReturnType<typeof setTimeout> | null>(null);
 
+watch(
+  () => timelineItem.activityId,
+  () => {
+    timelineStore.updateTimelineItemActivitySeconds(timelineItem, secondsAction.value);
+  },
+);
+
 const start = () => {
   isRunning.value = setInterval(() => {
-    timelineStore.changeActivitySeconds(timelineItem.activityId, 1);
+    timelineStore.updateTimelineItemActivitySeconds(timelineItem, timelineItem.activitySeconds + 1);
     secondsAction.value++;
   }, millisecondsInSecond);
 };
@@ -40,7 +47,10 @@ const stop = () => {
 
 const reset = () => {
   stop();
-  timelineStore.changeActivitySeconds(timelineItem.activityId, -secondsAction.value);
+  timelineStore.updateTimelineItemActivitySeconds(
+    timelineItem,
+    timelineItem.activitySeconds - secondsAction.value,
+  );
   secondsAction.value = 0;
 };
 

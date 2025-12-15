@@ -24,7 +24,7 @@ const setSecondsToComplete = (time: number, id: string) => {
 // Удаление активности
 const deleteActivity = (activity: TypeActivity) => {
   // Обнуляем выбранную активность в выборе(select) на странице "Временная шкала"
-  timelineStore.deleteActive(activity.id);
+  timelineStore.resetTimelineItemActivities(activity.id);
 
   // Удаление активности
   activitiesStore.removeActivity(activity);

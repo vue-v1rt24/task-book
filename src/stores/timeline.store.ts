@@ -34,7 +34,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   };
 
   // Обнуляем выбранную активность в выборе(select) на странице "Временная шкала"
-  function deleteActive(id: string) {
+  function resetTimelineItemActivities(id: string) {
     timelineItems.value.forEach((timelineItem) => {
       if (timelineItem.activityId === id) {
         timelineItem.activityId = 0;
@@ -49,9 +49,8 @@ export const useTimelineStore = defineStore('timeline', () => {
   };
 
   // Изменение времени у определённого timelineItems
-  function changeActivitySeconds(activityId: string | number | null, activitySeconds: number) {
-    const timelineItem = timelineItems.value.find((item) => item.activityId === activityId);
-    timelineItem && (timelineItem.activitySeconds += activitySeconds);
+  function updateTimelineItemActivitySeconds(timelineItem: TypeTimeline, activitySeconds: number) {
+    timelineItem.activitySeconds = activitySeconds;
   }
 
   // === Возвращаемые данные
@@ -59,9 +58,9 @@ export const useTimelineStore = defineStore('timeline', () => {
     timelineItems,
     currentPage,
     generateTimelineItems,
-    deleteActive,
+    resetTimelineItemActivities,
     changeCurrentPage,
-    changeActivitySeconds,
+    updateTimelineItemActivitySeconds,
   };
 });
 
