@@ -43,3 +43,11 @@ a {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Троеточие в конце. Текст в одной строке */
+.truncate-text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

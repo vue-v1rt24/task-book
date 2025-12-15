@@ -10,8 +10,6 @@ import type { TypeTimeline } from '@/types/timeline.type';
 //
 export const useActivitiesStore = defineStore('activity', () => {
   // === Хранилища
-
-  // Действия
   const activities = ref([
     {
       id: createRandomId(),
@@ -34,7 +32,12 @@ export const useActivitiesStore = defineStore('activity', () => {
   const periodSelectOptions = ref<TypePeriodSelectOptions[]>([]);
 
   // === Вычисления
+  // Получаем только активности, у которых есть время выполнения
+  const trackedActivities = computed(() => {
+    return activities.value.filter(({ secondsToComplete }) => secondsToComplete);
+  });
 
+  // === Действия
   // Формируем массив для select
   const generateActivitySelectOptions = computed(() => {
     return activities.value.map((activity) => ({ label: activity.name, value: activity.id }));
@@ -93,6 +96,7 @@ export const useActivitiesStore = defineStore('activity', () => {
   return {
     activities,
     periodSelectOptions,
+    trackedActivities,
     generateActivitySelectOptions,
     generatePeriodSelectOptions,
     createActivity,
