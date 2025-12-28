@@ -20,7 +20,8 @@ const { activity, timelineItems } = defineProps<{
 //
 const secondsDiff = computed(() => {
   return (
-    activitiesStore.getTotalActivitySeconds(activity, timelineItems) - activity.secondsToComplete
+    activitiesStore.calculateTrackedActivitySeconds(activity, timelineItems) -
+    activity.secondsToComplete
   );
 });
 

@@ -1,16 +1,32 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useActivitiesStore } from '@/stores/activities.store';
+
+import { formatSeconds } from '@/utils/formatSeconds.util';
+
+import { lowPercent, mediumPercent, hundredPercent } from '@/types/constants';
+
 import type { TypeActivity } from '@/types/activity.type';
 
+// Хранилище
+const activitiesStore = useActivitiesStore();
+
 //
-const { index } = defineProps<{
-  index: number;
+const { activity } = defineProps<{
   activity: TypeActivity;
 }>();
 
 //
-const color = ['red', '#ffc300', 'blue', 'green'][index];
-const progress = [10, 50, 70, 100][index];
-const timeProgress = ['03:00 / 30:00', '15:00 / 30:00', '21:00 / 30:00', '30:00 / 30:00'][index];
+const percentage = computed(() => activitiesStore.calculateActivityCompletionPercentage(activity));
+
+// Цвет линии прогресса в зависимости от процента прогресса
+const getProgressColorClass = (percentage: number) => {
+  if (percentage < lowPercent) return 'red';
+  if (percentage < mediumPercent) return '#ffc300';
+  if (percentage < hundredPercent) return 'blue';
+
+  return 'green';
+};
 </script>
 
 <template>
@@ -19,13 +35,19 @@ const timeProgress = ['03:00 / 30:00', '15:00 / 30:00', '21:00 / 30:00', '30:00 
 
     <!-- Шкала -->
     <div class="line">
-      <div class="line__progress" :style="`--line_width: ${progress}%; --line_bg: ${color}`"></div>
+      <div
+        class="line__progress"
+        :style="`--line_width: ${percentage}%; --line_bg: ${getProgressColorClass(percentage)}`"
+      ></div>
     </div>
 
     <!--  -->
     <div class="data">
-      <span>{{ progress }}%</span>
-      <span>{{ timeProgress }}</span>
+      <span>{{ percentage }}%</span>
+      <span>
+        {{ formatSeconds(activitiesStore.calculateTrackedActivitySeconds(activity)) }} /
+        {{ formatSeconds(activity.secondsToComplete) }}
+      </span>
     </div>
   </li>
 </template>

@@ -15,3 +15,8 @@ export const millisecondsInSecond = 1000;
 
 //
 export const midnightHour = 0;
+
+//
+export const lowPercent = 33;
+export const mediumPercent = 66;
+export const hundredPercent = 100;

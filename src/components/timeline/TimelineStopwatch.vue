@@ -23,6 +23,7 @@ const { timelineItem } = defineProps<{
 // Управление секундомером
 const secondsAction = ref(timelineItem.activitySeconds);
 const isRunning = ref<ReturnType<typeof setTimeout> | null>(null);
+const temp = 120;
 
 watch(
   () => timelineItem.activityId,
@@ -33,8 +34,12 @@ watch(
 
 const start = () => {
   isRunning.value = setInterval(() => {
-    timelineStore.updateTimelineItemActivitySeconds(timelineItem, timelineItem.activitySeconds + 1);
-    secondsAction.value++;
+    // timelineStore.updateTimelineItemActivitySeconds(timelineItem, timelineItem.activitySeconds + 1);
+    timelineStore.updateTimelineItemActivitySeconds(
+      timelineItem,
+      timelineItem.activitySeconds + temp,
+    );
+    secondsAction.value += temp;
   }, millisecondsInSecond);
 };
 
@@ -49,6 +54,7 @@ const reset = () => {
   stop();
   timelineStore.updateTimelineItemActivitySeconds(
     timelineItem,
+    // timelineItem.activitySeconds - secondsAction.value,
     timelineItem.activitySeconds - secondsAction.value,
   );
   secondsAction.value = 0;

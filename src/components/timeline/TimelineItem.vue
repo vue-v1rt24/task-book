@@ -65,30 +65,6 @@ watch(selectedActivityId, (id) => {
   scroll-margin-top: 120px;
 }
 
-/*  */
-
-.line__link {
-  position: absolute;
-  top: -16px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 8px;
-  padding: 8px;
-  z-index: 1;
-
-  /* Цвет по умолчанию */
-  &.default {
-    background-color: rgb(210, 210, 210);
-  }
-
-  /* Активный цвет */
-  &.active {
-    font-weight: 900;
-    color: var(--color-white);
-    background-color: var(--color-purple-500);
-  }
-}
-
 /* Блок select */
 .select_wrap {
   flex: 1;

@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
+import { useTimelineStore } from './timeline.store';
 import { secondsInHour, secondsInMinute } from '@/types/constants';
 import { createRandomId } from '@/utils/createRandomId.util';
 import { formatSeconds } from '@/utils/formatSeconds.util';
@@ -7,24 +8,32 @@ import { formatSeconds } from '@/utils/formatSeconds.util';
 import type { TypeActivity, TypePeriodSelectOptions } from '@/types/activity.type';
 import type { TypeTimeline } from '@/types/timeline.type';
 
+import { hundredPercent } from '@/types/constants';
+
 //
 export const useActivitiesStore = defineStore('activity', () => {
+  // Другое хранилище
+  const timelineStore = useTimelineStore();
+
   // === Хранилища
   const activities = ref([
     {
       id: createRandomId(),
       name: 'Написание кода',
-      secondsToComplete: 0 * secondsInHour,
+      // secondsToComplete: 0 * secondsInHour,
+      secondsToComplete: 15 * 60,
     },
     {
       id: createRandomId(),
       name: 'Чтение',
-      secondsToComplete: 1 * secondsInHour,
+      // secondsToComplete: 1 * secondsInHour,
+      secondsToComplete: 15 * 60,
     },
     {
       id: createRandomId(),
       name: 'Обучение',
-      secondsToComplete: 2 * secondsInHour,
+      // secondsToComplete: 2 * secondsInHour,
+      secondsToComplete: 15 * 60,
     },
   ]);
 
@@ -83,13 +92,20 @@ export const useActivitiesStore = defineStore('activity', () => {
   }
 
   //
-  function getTotalActivitySeconds(activity: TypeActivity, timelineItems: TypeTimeline[]) {
-    return timelineItems
+  function calculateTrackedActivitySeconds(activity: TypeActivity) {
+    return timelineStore.timelineItems
       .filter((timelineItem) => timelineItem.activityId === activity.id)
       .reduce(
         (totalSeconds, timelineItem) => Math.round(timelineItem.activitySeconds + totalSeconds),
         0,
       );
+  }
+
+  // Динамический вывод процента задачи на странице "Прогресс"
+  function calculateActivityCompletionPercentage(activity: TypeActivity) {
+    return Math.floor(
+      (calculateTrackedActivitySeconds(activity) * hundredPercent) / activity.secondsToComplete,
+    );
   }
 
   // === Возвращаемые данные
@@ -102,7 +118,8 @@ export const useActivitiesStore = defineStore('activity', () => {
     createActivity,
     setSecondsToComplete,
     removeActivity,
-    getTotalActivitySeconds,
+    calculateTrackedActivitySeconds,
+    calculateActivityCompletionPercentage,
   };
 });
 

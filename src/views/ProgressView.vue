@@ -10,9 +10,8 @@ const activitiesStore = useActivitiesStore();
   <div class="activities">
     <ul class="list">
       <ProgressItem
-        v-for="(activity, index) in activitiesStore.trackedActivities"
+        v-for="activity in activitiesStore.trackedActivities"
         :key="activity.id"
-        :index
         :activity
       />
     </ul>

@@ -20,8 +20,8 @@ export const useTimelineStore = defineStore('timeline', () => {
   const generateTimelineItems = (activities: TypeActivity[]) => {
     timelineItems.value = [...Array(hoursInDay).keys()].map((hour) => ({
       hour: hour as TypeHour,
-      activityId: [0, 1, 2, 3, 4].includes(hour) ? activities[hour % 3]!.id : null,
-      activitySeconds: [0, 1, 2, 3, 4].includes(hour) ? hour * 600 : 0,
+      activityId: null, // [0, 1, 2, 3, 4].includes(hour) ? activities[hour % 3]!.id : null,
+      activitySeconds: 0, // [0, 1, 2, 3, 4].includes(hour) ? hour * 600 : 0,
 
       // activityId: hour % 4 === 0 ? 0 : activities[hour % 2]!.id,
       // activitySeconds: hour % 4 === 0 ? 0 : (15 * secondsInMinute * hour) % secondsInHour,
