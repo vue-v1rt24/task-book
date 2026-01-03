@@ -28,6 +28,8 @@ watch(
     }
   },
 );
+
+// Тест
 </script>
 
 <template>
