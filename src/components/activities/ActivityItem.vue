@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import ActivitySecondsToComplete from './ActivitySecondsToComplete.vue';
+import RemainingActivitySeconds from './RemainingActivitySeconds.vue';
 import UiButton from '@/components/ui/UiButton.vue';
 import UiSelect from '@/components/ui/UiSelect.vue';
 import CloseSvg from '@/components/imagesSvg/CloseSvg.vue';
@@ -9,13 +9,11 @@ import DeleteSvg from '@/components/imagesSvg/DeleteSvg.vue';
 
 import type { TypeActivity } from '@/types/activity.type';
 import type { TypePeriodSelectOptions } from '@/types/activity.type';
-import type { TypeTimeline } from '@/types/timeline.type';
 
 //
-const { activity, periodSelectOptions, timelineItems } = defineProps<{
+const { activity, periodSelectOptions } = defineProps<{
   activity: TypeActivity;
   periodSelectOptions: TypePeriodSelectOptions[];
-  timelineItems: TypeTimeline[];
 }>();
 
 //
@@ -55,11 +53,7 @@ watch(secondsToComplete, (val) => {
       <UiSelect placeholder="чч:мм" :options="periodSelectOptions" v-model="secondsToComplete" />
 
       <!-- Оставшееся время до завершения задачи -->
-      <ActivitySecondsToComplete
-        v-if="activity.secondsToComplete"
-        :activity
-        :timeline-items="timelineItems"
-      />
+      <RemainingActivitySeconds v-if="activity.secondsToComplete" :activity />
     </div>
   </li>
 </template>

@@ -31,6 +31,26 @@ watch(
 </script>
 
 <template>
+  <!-- Блоки анимации -->
+  <div class="bloks_wrap">
+    <div class="bloks bl_1">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+
+    <div class="bloks bl_2">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+  </div>
+  <!-- /Блоки анимации -->
+
   <!-- Шапка -->
   <Header />
 
@@ -49,4 +69,39 @@ watch(
   <Navigation />
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+/* Блоки анимации */
+.bloks_wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.bloks {
+  flex: 1;
+  display: flex;
+}
+
+.block {
+  flex: 1;
+  background-color: #000000;
+  transform: scaleY(1);
+  will-change: transform;
+
+  /* bl_1, bl_2 */
+  .bl_1 & {
+    transform-origin: top;
+  }
+
+  .bl_2 & {
+    transform-origin: bottom;
+  }
+}
+/* /Блоки анимации */
+</style>

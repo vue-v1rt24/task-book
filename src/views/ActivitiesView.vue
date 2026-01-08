@@ -4,6 +4,7 @@ import { useTimelineStore } from '@/stores/timeline.store';
 
 import ActivityItem from '@/components/activities/ActivityItem.vue';
 import ActivityForm from '@/components/activities/ActivityForm.vue';
+import EmptyState from '@/components/EmptyState.vue';
 
 import type { TypeActivity } from '@/types/activity.type';
 
@@ -32,26 +33,24 @@ const deleteActivity = (activity: TypeActivity) => {
 </script>
 
 <template>
-  <ul v-if="activitiesStore.activities.length" class="activities">
-    <ActivityItem
-      v-for="activity in activitiesStore.activities"
-      :key="activity.id"
-      :activity
-      :period-select-options="activitiesStore.periodSelectOptions"
-      :timeline-items="timelineStore.timelineItems"
-      @set-seconds-to-complete="setSecondsToComplete($event, activity.id)"
-      @delete-activity="deleteActivity"
-    />
-  </ul>
+  <div>
+    <ul v-if="activitiesStore.activities.length" class="activities">
+      <ActivityItem
+        v-for="activity in activitiesStore.activities"
+        :key="activity.id"
+        :activity
+        :period-select-options="activitiesStore.periodSelectOptions"
+        @set-seconds-to-complete="setSecondsToComplete($event, activity.id)"
+        @delete-activity="deleteActivity"
+      />
+    </ul>
 
-  <!--  -->
-  <div v-else class="activities_not">
-    <img src="@/assets/img/no_activities.svg" alt="" />
-    <span>Активностей пока нет</span>
+    <!--  -->
+    <EmptyState v-else title="Активностей пока нет" img-path="/img/no_activities.svg" />
+
+    <!-- Форма добавления активности -->
+    <ActivityForm @create-activity="createActivity" />
   </div>
-
-  <!-- Форма добавления активности -->
-  <ActivityForm @create-activity="createActivity" />
 </template>
 
 <style lang="css" scoped>
@@ -61,26 +60,5 @@ const deleteActivity = (activity: TypeActivity) => {
   flex-direction: column;
   row-gap: 20px;
   padding: 30px 0;
-}
-
-/*  */
-
-.activities_not {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 30px;
-  padding-top: 30px;
-
-  /* img */
-  img {
-    height: 300px;
-  }
-
-  /* span */
-  span {
-    font-size: 30px;
-  }
 }
 </style>

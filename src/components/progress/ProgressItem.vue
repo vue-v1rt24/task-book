@@ -3,8 +3,7 @@ import { computed } from 'vue';
 import { useActivitiesStore } from '@/stores/activities.store';
 
 import { formatSeconds } from '@/utils/formatSeconds.util';
-
-import { lowPercent, mediumPercent, hundredPercent } from '@/types/constants';
+import { getProgressColorClass } from '@/utils/progressColor';
 
 import type { TypeActivity } from '@/types/activity.type';
 
@@ -18,15 +17,6 @@ const { activity } = defineProps<{
 
 //
 const percentage = computed(() => activitiesStore.calculateActivityCompletionPercentage(activity));
-
-// Цвет линии прогресса в зависимости от процента прогресса
-const getProgressColorClass = (percentage: number) => {
-  if (percentage < lowPercent) return 'red';
-  if (percentage < mediumPercent) return '#ffc300';
-  if (percentage < hundredPercent) return 'blue';
-
-  return 'green';
-};
 </script>
 
 <template>

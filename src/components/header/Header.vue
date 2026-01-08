@@ -29,7 +29,7 @@ const goTo = async () => {
       <div class="header">
         <!-- Логотип -->
         <a @click.prevent="goTo" href="#" class="header__logo">
-          <img src="@/assets/img/logo.png" alt="Логотип" />
+          <img src="/img/logo.png" alt="Логотип" />
         </a>
 
         <!-- Прогресс -->

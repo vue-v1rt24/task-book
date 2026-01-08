@@ -1,12 +1,11 @@
 import { ref, computed } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useTimelineStore } from './timeline.store';
-import { secondsInHour, secondsInMinute } from '@/types/constants';
+import { secondsInMinute } from '@/types/constants';
 import { createRandomId } from '@/utils/createRandomId.util';
 import { formatSeconds } from '@/utils/formatSeconds.util';
 
 import type { TypeActivity, TypePeriodSelectOptions } from '@/types/activity.type';
-import type { TypeTimeline } from '@/types/timeline.type';
 
 import { hundredPercent } from '@/types/constants';
 
@@ -46,10 +45,16 @@ export const useActivitiesStore = defineStore('activity', () => {
     return activities.value.filter(({ secondsToComplete }) => secondsToComplete);
   });
 
-  // === Действия
   // Формируем массив для select
   const generateActivitySelectOptions = computed(() => {
     return activities.value.map((activity) => ({ label: activity.name, value: activity.id }));
+  });
+
+  //
+  const totalActivitySecondsToComplete = computed(() => {
+    return trackedActivities.value
+      .map(({ secondsToComplete }) => secondsToComplete)
+      .reduce((total, seconds) => total + seconds, 0);
   });
 
   // === Действия
@@ -108,6 +113,18 @@ export const useActivitiesStore = defineStore('activity', () => {
     );
   }
 
+  // Подсчёт времени всех активностей
+  function calculateCompletionPercentage(totalTrackedSeconds: number) {
+    return Math.floor(
+      (totalTrackedSeconds * hundredPercent) / totalActivitySecondsToComplete.value,
+    );
+  }
+
+  // Возвращаем - либо + в зависимости от значения
+  function formatSecondsWithSign(seconds: number) {
+    return `${seconds >= 0 ? '+' : '-'}${formatSeconds(Math.abs(seconds))}`;
+  }
+
   // === Возвращаемые данные
   return {
     activities,
@@ -120,6 +137,8 @@ export const useActivitiesStore = defineStore('activity', () => {
     removeActivity,
     calculateTrackedActivitySeconds,
     calculateActivityCompletionPercentage,
+    calculateCompletionPercentage,
+    formatSecondsWithSign,
   };
 });
 

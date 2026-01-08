@@ -1,18 +1,33 @@
 <script setup lang="ts">
 import CheckCircleSvg from '@/components/imagesSvg/CheckCircleSvg.vue';
+import { useTotalProgress } from '@/composables/useTotalProgress';
+
+import { getProgressColorClass } from '@/utils/progressColor';
+
+import { hundredPercent } from '@/types/constants';
+
+//
+
+//
+const { percentage, colorClass } = useTotalProgress();
 </script>
 
 <template>
   <RouterLink :to="{ name: 'progress' }" class="header__complete_wrap">
-    <div v-if="true" class="header__complete">
-      Day complete!
-      <CheckCircleSvg />
+    <div v-if="percentage < hundredPercent" class="header__complete">
+      <div>
+        Прогресс: <span class="header__complete_procent">{{ percentage }}%</span>
+      </div>
+      <div
+        class="header__complete_indicator"
+        :style="`background-color: ${getProgressColorClass(percentage)}`"
+      ></div>
     </div>
 
     <!--  -->
     <div v-else class="header__complete">
-      <div>Прогресс: <span class="header__complete_procent">20%</span></div>
-      <div class="header__complete_indicator"></div>
+      Day complete!
+      <CheckCircleSvg />
     </div>
   </RouterLink>
 </template>

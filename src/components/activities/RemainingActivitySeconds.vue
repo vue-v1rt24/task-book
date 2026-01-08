@@ -1,40 +1,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
 import { useActivitiesStore } from '@/stores/activities.store';
-
-import { formatSeconds } from '@/utils/formatSeconds.util';
-
 import type { TypeActivity } from '@/types/activity.type';
-import type { TypeTimeline } from '@/types/timeline.type';
 
 // Хранилище
 const activitiesStore = useActivitiesStore();
 
 //
-const { activity, timelineItems } = defineProps<{
+const { activity } = defineProps<{
   activity: TypeActivity;
-  timelineItems: TypeTimeline[];
 }>();
 
 //
-const secondsDiff = computed(() => {
-  return (
-    activitiesStore.calculateTrackedActivitySeconds(activity, timelineItems) -
-    activity.secondsToComplete
-  );
+const remainingSeconds = computed(() => {
+  return activitiesStore.calculateTrackedActivitySeconds(activity) - activity.secondsToComplete;
 });
 
-const sign = computed(() => (secondsDiff.value >= 0 ? '+' : '-'));
-
-const seconds = computed(() => `${sign.value}${formatSeconds(Math.abs(secondsDiff.value))}`);
-
-const colorClasses = computed(() => (secondsDiff.value < 0 ? 'red' : 'green'));
+const colorClasses = computed(() => (remainingSeconds.value < 0 ? 'red' : 'green'));
 </script>
 
 <template>
   <div :class="['remaining_time', colorClasses]">
-    {{ seconds }}
+    {{ activitiesStore.formatSecondsWithSign(remainingSeconds) }}
   </div>
 </template>
 
