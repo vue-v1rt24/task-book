@@ -7,6 +7,9 @@ body {
   min-width: 360px;
   font-family: sans-serif;
   font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   color: black;
   background-color: white;
   overflow-x: hidden;

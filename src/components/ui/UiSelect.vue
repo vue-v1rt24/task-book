@@ -1,7 +1,10 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
 defineProps<{
   placeholder: string;
-  options: T[];
+  options: {
+    value: string | number;
+    label: string;
+  }[];
 }>();
 
 //

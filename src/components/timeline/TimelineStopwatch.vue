@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStopwatch } from '@/composables/useStopWatch';
+import { useStopwatch } from '@/composables/useStopwatch';
 
 import UiButton from '@/components/ui/UiButton.vue';
 
